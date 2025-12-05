@@ -27,9 +27,10 @@ class CalculadoraError:
     def create_buttons(self):
         frame = tk.Frame(self.root, bd=0, width=40, height=50, relief=tk.RIDGE)
         
-        # --- FILA 1: C, * ---
+        # --- FILA 1: C, *, - ---
         self.crear_boton(frame, "C", 1, 0, lambda: self.btn_clear())
-        self.crear_boton(frame, "*", 1, 1, lambda: self.btn_click("*"))  # BOTÓN DE MULTIPLICAR
+        self.crear_boton(frame, "*", 1, 1, lambda: self.btn_click("*"))   # Multiplica (pero truqueado)
+        self.crear_boton(frame, "-", 1, 2, lambda: self.btn_click("-"))   # Resta normal
         
         # --- FILA 2 ---
         self.crear_boton(frame, "7", 2, 0, lambda: self.btn_click(7))
@@ -71,12 +72,14 @@ class CalculadoraError:
             resultado = ""
             
             # --- ERROR INTENCIONAL ---
-            # SI HAY *, se convierte en un + (trampa)
+            # SI HAY *, se convierte en +
             if "*" in self.ecuacion:
                 ecuacion_adulterada = self.ecuacion.replace("*", "+")
                 resultado = str(eval(ecuacion_adulterada)) 
-                print(f"[DEBUG] Multiplicación detectada → cambiada por suma: {ecuacion_adulterada}")
+                print(f"[DEBUG] Multiplicación → Suma: {ecuacion_adulterada}")
+            
             else:
+                # Resta funciona normal
                 resultado = str(eval(self.ecuacion))
 
             self.input_text.set(resultado)
